@@ -189,7 +189,7 @@
             this.insertHtml(newTag);
         };
         AngularEditorService.prototype.insertVideo = function (videoUrl) {
-            if (videoUrl.match('www.youtube.com')) {
+            if (videoUrl.match('youtu.be')) {
                 this.insertYouTubeVideoTag(videoUrl);
             }
             if (videoUrl.match('vimeo.com')) {
@@ -197,9 +197,10 @@
             }
         };
         AngularEditorService.prototype.insertYouTubeVideoTag = function (videoUrl) {
-            var id = videoUrl.split('v=')[1];
+            var videoUrlParts = videoUrl.split('/');
+            var id = videoUrlParts[videoUrlParts.length - 1];
             var imageUrl = "https://img.youtube.com/vi/" + id + "/0.jpg";
-            var thumbnail = "\n      <div style='position: relative'>\n        <a href='" + videoUrl + "' target='_blank'>\n          <img src=\"" + imageUrl + "\" alt=\"click to watch\"/>\n          <img style='position: absolute; left:200px; top:140px'\n          src=\"https://img.icons8.com/color/96/000000/youtube-play.png\"/>\n        </a>\n      </div>";
+            var thumbnail = "\n    <div class=\"container\" style=\"position: relative; width: 100%; height: 0; padding-bottom: 56.25%;\">\n      <iframe\n        allow=\"accelerometer; autoplay;clipboard-write; encrypted-media; gyroscope; picture-in-picture\" \n        allowfullscreen=\"\"\n        frameborder=\"0\" \n        src=\"https://www.youtube.com/embed/" + id + "\" \n        style=\"position: absolute; top: 0; left: 0; width: 100%; height: 100%;\" \n        title=\"Video content\">\n      </iframe>\n    </div>";
             this.insertHtml(thumbnail);
         };
         AngularEditorService.prototype.insertVimeoVideoTag = function (videoUrl) {
@@ -1400,7 +1401,7 @@
          */
         AngularEditorToolbarComponent.prototype.insertVideo = function () {
             this.execute.emit('');
-            var url = prompt('Insert Video link', "https://");
+            var url = prompt('Insert Youtube Video link', "https://");
             if (url && url !== '' && url !== "https://") {
                 this.editorService.insertVideo(url);
             }

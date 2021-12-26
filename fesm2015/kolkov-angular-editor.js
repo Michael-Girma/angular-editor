@@ -164,7 +164,7 @@ class AngularEditorService {
         this.insertHtml(newTag);
     }
     insertVideo(videoUrl) {
-        if (videoUrl.match('www.youtube.com')) {
+        if (videoUrl.match('youtu.be')) {
             this.insertYouTubeVideoTag(videoUrl);
         }
         if (videoUrl.match('vimeo.com')) {
@@ -172,16 +172,20 @@ class AngularEditorService {
         }
     }
     insertYouTubeVideoTag(videoUrl) {
-        const id = videoUrl.split('v=')[1];
+        const videoUrlParts = videoUrl.split('/');
+        const id = videoUrlParts[videoUrlParts.length - 1];
         const imageUrl = `https://img.youtube.com/vi/${id}/0.jpg`;
         const thumbnail = `
-      <div style='position: relative'>
-        <a href='${videoUrl}' target='_blank'>
-          <img src="${imageUrl}" alt="click to watch"/>
-          <img style='position: absolute; left:200px; top:140px'
-          src="https://img.icons8.com/color/96/000000/youtube-play.png"/>
-        </a>
-      </div>`;
+    <div class="container" style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%;">
+      <iframe
+        allow="accelerometer; autoplay;clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen=""
+        frameborder="0" 
+        src="https://www.youtube.com/embed/${id}" 
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+        title="Video content">
+      </iframe>
+    </div>`;
         this.insertHtml(thumbnail);
     }
     insertVimeoVideoTag(videoUrl) {
@@ -1008,7 +1012,7 @@ class AngularEditorToolbarComponent {
      */
     insertVideo() {
         this.execute.emit('');
-        const url = prompt('Insert Video link', `https://`);
+        const url = prompt('Insert Youtube Video link', `https://`);
         if (url && url !== '' && url !== `https://`) {
             this.editorService.insertVideo(url);
         }
